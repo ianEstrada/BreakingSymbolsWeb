@@ -36,5 +36,5 @@ Esta guía te ayudará a ejecutar el proyecto en tu máquina local para desarrol
 Abre tu terminal y clona este proyecto:
 
 ```bash
-git clone [URL_DE_TU_REPOSITORIO_GIT]
-cd [NOMBRE_DE_TU_CARPETA]
+git clone https://github.com/ianEstrada/BreakingSymbolsWeb.git
+cd BreakingSymbols
