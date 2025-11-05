@@ -77,16 +77,9 @@ function onResults(results) {
         // Dibujar las LÍNEAS (conexiones)
         drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, { 
             color: '#00FF00', // Verde
-            lineWidth: 2      // Grosor de 2 píxeles
+            lineWidth: 2    // Grosor de 2 píxeles
         });
 
-        // Dibujar los PUNTOS (landmarks)
-        drawLandmarks(canvasCtx, landmarks, {
-            color: '#FF0000',     // Rojo (corregido de #F000)
-            lineWidth: 1,         // Un borde fino de 1px para el círculo
-            circleRadius: 2       // Radio de 2 píxeles
-        });
-        
         // 1. Extraer features
         const features = extraerFeatures_JS(landmarks);
         
