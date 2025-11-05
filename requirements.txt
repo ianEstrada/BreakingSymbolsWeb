@@ -1,0 +1,8 @@
+django
+gunicorn  
+numpy
+scikit-learn
+opencv-python-headless 
+mediapipe
+pyttsx3
+django-cors-headers 
