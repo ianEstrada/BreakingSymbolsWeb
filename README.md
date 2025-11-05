@@ -38,3 +38,28 @@ Abre tu terminal y clona este proyecto:
 ```bash
 git clone https://github.com/ianEstrada/BreakingSymbolsWeb.git
 cd BreakingSymbols
+
+```
+
+### 2. Crear un Entorno Virtual
+Es una buena práctica usar un entorno virtual para aislar las dependencias de tu proyecto.
+
+```bash
+# Crear el entorno
+python -m venv venv
+
+# Activar el entorno
+# En Windows:
+.\venv\Scripts\activate
+# En macOS/Linux:
+source venv/bin/activate
+
+```
+
+### 3. Instalar Dependencias
+Con tu entorno virtual activado, instala todas las librerías necesarias que se encuentran en requirements.txt.
+
+```bash
+pip install -r requirements.txt
+
+```
