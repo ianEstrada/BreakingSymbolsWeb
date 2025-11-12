@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
     
+    <script src="{% static 'face-api.min.js' %}"></script>
     <style>
         /* --- Configuración General --- */
         body {
@@ -191,7 +192,14 @@
                 <h2>La IA detecta:</h2>
                 <span id="prediccion">...</span>
                 <small>Coloca tu mano frente a la cámara</small>
+                <h2 style="margin-top: 20px;">Tu emoción:</h2>
+                <span id="emocion" style="color: #e67e22; font-size: 3rem;">...</span>
             </div>
+
+<div class="prediction-box" id="texto-formado-box">
+    <h2>Palabra formada:</h2>
+    <span id="textoFormado" style="font-size: 2rem; color: #28a745; font-weight: bold;">...</span>
+</div>
 
         </div>
 

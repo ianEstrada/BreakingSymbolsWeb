@@ -1,6 +1,7 @@
 # En (tu_app)/ia_loader.py
 import pickle
 import os
+from fer import FER
 from django.conf import settings
 
 def load_model():
@@ -23,6 +24,19 @@ def load_model():
     except Exception as e:
         print(f"Error al cargar modelo: {e}")
         return None, None
+    
+def load_emotion_model():
+    try:
+        # ¡IMPORTANTE! mtcnn=True es muy pesado para un servidor.
+        # mtcnn=False usa Haar cascades (OpenCV), que es mucho más rápido
+        # y ya tienes OpenCV instalado.
+        detector = FER(mtcnn=False) 
+        print("✅ Modelo de Emociones (FER) cargado exitosamente.")
+        return detector
+    except Exception as e:
+        print(f"Error al cargar modelo de emociones: {e}")
+        return None
 
 # Carga el modelo al iniciar Django
 MODELO_IA, SCALER_IA = load_model()
+EMOTION_DETECTOR = load_emotion_model()

@@ -1,9 +1,11 @@
 import json
 import numpy as np
+import base64
+import cv2
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render # Para servir el HTML
-from .ia_loader import MODELO_IA, SCALER_IA # Importa el modelo cargado
+from .ia_loader import MODELO_IA, SCALER_IA, EMOTION_DETECTOR # Importa el modelo cargado
 
 # Umbral de confianza
 UMBRAL_CONFIANZA = 0.3
@@ -48,6 +50,48 @@ def predict_sign(request):
         return JsonResponse({
             'letra': letra_predicha,
             'confianza': float(max_prob)
+        })
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+    
+@csrf_exempt # Deshabilita CSRF para esta API
+def predict_emotion(request):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+    if EMOTION_DETECTOR is None:
+         return JsonResponse({'error': 'Modelo de emoción no cargado'}, status=500)
+
+    try:
+        # 1. Recibir la imagen en Base64 desde JavaScript
+        data = json.loads(request.body)
+        image_data_b64 = data.get('image_b64')
+        
+        # Quitar el prefijo 'data:image/jpeg;base64,'
+        header, image_data_b64 = image_data_b64.split(',', 1) 
+        
+        # 2. Decodificar Base64 a bytes
+        img_data = base64.b64decode(image_data_b64)
+        
+        # 3. Convertir bytes a un array de OpenCV
+        np_arr = np.frombuffer(img_data, np.uint8)
+        frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+
+        # 4. Usar FER para detectar emociones (en el servidor)
+        all_faces = EMOTION_DETECTOR.detect_emotions(frame)
+
+        if not all_faces:
+            return JsonResponse({'emocion': '...'})
+
+        # Tomar la primera cara detectada
+        face_data = all_faces[0]
+        emotions = face_data['emotions']
+        top_emotion = max(emotions, key=emotions.get)
+            
+        # 5. Devolver la predicción
+        return JsonResponse({
+            'emocion': top_emotion.capitalize()
         })
 
     except Exception as e:
