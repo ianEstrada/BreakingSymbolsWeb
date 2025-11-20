@@ -8,7 +8,7 @@ from django.shortcuts import render # Para servir el HTML
 from .ia_loader import MODELO_IA, SCALER_IA, EMOTION_DETECTOR # Importa el modelo cargado
 
 # Umbral de confianza
-UMBRAL_CONFIANZA = 0.3
+UMBRAL_CONFIANZA = 0.45
 
 # --- Vista para servir el Frontend ---
 def index(request):
