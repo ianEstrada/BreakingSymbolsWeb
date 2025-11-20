@@ -1,20 +1,16 @@
-# --- Framework Principal ---
+# --- Framework Web y Servidor ---
 django~=4.2.0
-
-# --- Motor de IA (Señas) ---
-scikit-learn~=1.3.0
-mediapipe~=0.10.0
-
-# --- Motor de IA (Emociones) ---
-# 'fer' es la librería, que depende de 'tensorflow'
-fer==22.5.1
-tensorflow~=2.13.0
-opencv-python-headless~=4.8.0
-
-# --- Dependencias Cruciales (especialmente para TensorFlow) ---
-# TensorFlow 2.13 requiere una versión específica de Numpy
-numpy~=1.23.0
-
-# --- Utilidades de Django y Despliegue ---
-django-cors-headers~=4.3.0
 gunicorn~=21.2.0
+django-cors-headers~=4.3.0
+asgiref>=3.6.0
+
+# --- Procesamiento de Datos e IA (Solo Señas) ---
+# Scikit-learn es el cerebro que usa tu .pkl
+scikit-learn~=1.3.0
+# Numpy y Pandas para manejar los arrays de datos
+numpy~=1.23.0
+pandas>=2.0.0
+
+# --- Utilidades ---
+# Gdown es vital para bajar tu modelo desde Google Drive
+gdown
