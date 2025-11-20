@@ -11,217 +11,217 @@
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
     
     <script src="{% static 'face-api.min.js' %}"></script>
+    
     <style>
-        /* --- Configuración General --- */
+        /* --- ESTILOS GENERALES --- */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f8f9fa; /* Un fondo gris muy claro */
-            color: #333; /* Texto principal oscuro */
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f9;
             margin: 0;
             padding: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
             min-height: 100vh;
         }
 
-        /* --- Encabezado --- */
         header {
-            width: 100%;
-            background-color: #007bff; /* Un azul amigable y esperanzador */
+            background-color: #007bff;
             color: white;
-            padding: 20px 0;
+            padding: 15px 0;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        header h1 {
-            margin: 0;
-            font-size: 2.2rem;
-        }
-        header p {
-            margin: 5px 0 0;
-            font-size: 1.1rem;
-            font-weight: 300;
-        }
+        header h1 { margin: 0; font-size: 1.8rem; }
 
-        /* --- Contenido Principal --- */
-        .main-content {
+        /* --- CONTENEDOR PRINCIPAL (GRID) --- */
+        .main-container {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 1200px;
+            flex-direction: row; /* Lado a lado */
+            justify-content: center;
+            align-items: flex-start; /* Alinear arriba */
             padding: 20px;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
             box-sizing: border-box;
         }
 
-        /* --- Sección de la App (Video y Predicción) --- */
-        .app-container {
+        /* --- COLUMNA IZQUIERDA: VIDEO Y RESULTADOS (Zona 2) --- */
+        .left-column {
+            flex: 2; /* Ocupa 2 partes del espacio (más ancho) */
             display: flex;
-            flex-wrap: wrap; /* Para que se ajuste en pantallas pequeñas */
-            justify-content: center;
-            gap: 30px;
-            width: 100%;
+            flex-direction: column;
+            gap: 15px;
         }
-        
-        /* Contenedor del video/canvas */
-        .video-box {
+
+        .video-wrapper {
             background-color: #000;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            overflow: hidden; /* Para que el canvas redondeado se vea bien */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             position: relative;
-            width: 640px;
-            height: 480px;
+            width: 100%;
+            /* Mantiene proporción 4:3 aprox o altura fija */
+            height: auto;
+            aspect-ratio: 4/3; 
         }
+
         #output_canvas {
             width: 100%;
             height: 100%;
+            display: block;
         }
-        #input_video {
-            display: none; /* El video de entrada está oculto, dibujamos en el canvas */
+        #input_video { display: none; }
+
+        /* BARRA DE RESULTADOS (Zona 2 - Debajo del video) */
+        .results-bar {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            gap: 15px;
         }
 
-        /* Contenedor de la predicción */
-        .prediction-box {
+        .result-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            flex: 1; /* Todos del mismo ancho */
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding: 40px;
-            text-align: center;
-            width: 300px;
-            height: fit-content;
-        }
-        .prediction-box h2 {
-            margin: 0 0 15px;
-            font-size: 1.5rem;
-            color: #555;
-            font-weight: 500;
-        }
-        #prediccion {
-            font-size: 5rem; /* ¡Letra bien grande! */
-            font-weight: bold;
-            color: #007bff; /* Mismo azul del encabezado */
-            min-height: 80px; /* Para que no salte el layout */
-        }
-        .prediction-box small {
-            margin-top: 10px;
-            color: #777;
-            font-style: italic;
         }
 
-        /* --- Sección Educativa --- */
-        .info-section {
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding: 30px;
-            margin-top: 40px;
-            width: 100%;
-            max-width: 970px; /* Ancho total de la app */
-            box-sizing: border-box;
-            text-align: left;
-        }
-        .info-section h3 {
-            font-size: 1.8rem;
-            color: #0056b3; /* Un azul más oscuro */
-            margin-top: 0;
-            text-align: center;
-        }
-        .info-section p {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-        .info-section strong {
-            color: #0056b3;
-        }
-
-        /* --- Footer --- */
-        footer {
-            width: 100%;
-            text-align: center;
-            padding: 20px;
-            margin-top: auto; /* Empuja el footer al fondo */
-            background-color: #e9ecef; /* Un gris muy claro para el footer */
-            border-top: 1px solid #ddd;
-            color: #666;
+        .result-card h3 {
+            margin: 0 0 10px 0;
             font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* --- Responsividad para móviles --- */
-        @media (max-width: 768px) {
-            header h1 { font-size: 1.8rem; }
-            header p { font-size: 1rem; }
-            .video-box {
-                width: 100%; /* El video ocupa todo el ancho */
-                height: auto;
-                max-width: 640px;
+        .result-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Colores específicos para cada dato */
+        #prediccion { color: #007bff; } /* Azul */
+        #emocion { color: #e67e22; font-size: 2rem; } /* Naranja */
+        #textoFormado { color: #28a745; font-size: 2rem; } /* Verde */
+
+
+        /* --- COLUMNA DERECHA: GUÍA (Zona 1) --- */
+        .right-column {
+            flex: 1; /* Ocupa 1 parte del espacio (menos ancho) */
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-height: 800px; /* Altura máxima para que no sea eterna */
+            overflow-y: auto; /* Scroll si la imagen es muy larga */
+            text-align: center;
+        }
+
+        .right-column h3 {
+            margin-top: 0;
+            color: #555;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .guide-image {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        /* --- TEXTO INFORMATIVO (Abajo del todo) --- */
+        .info-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 15px;
+            text-align: center;
+            color: #777;
+            font-size: 0.8rem;
+        }
+
+        /* --- RESPONSIVIDAD (Celulares) --- */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column; /* En celular, todo uno debajo del otro */
             }
-            .prediction-box {
+            .results-bar {
+                flex-wrap: wrap; /* Si no caben los resultados, bajar de línea */
+            }
+            .left-column, .right-column {
                 width: 100%;
-                max-width: 640px;
-                box-sizing: border-box;
             }
-            #prediccion { font-size: 4rem; }
         }
-
     </style>
 </head>
 <body>
 
     <header>
         <h1>Intérprete de Señas IA</h1>
-        <p>Un puente hacia la comunicación, creado con Inteligencia Artificial.</p>
     </header>
 
-    <main class="main-content">
-
-        <div class="app-container">
+    <div class="main-container">
+        
+        <div class="left-column">
             
-            <div class="video-box">
+            <div class="video-wrapper">
                 <video id="input_video"></video>
                 <canvas id="output_canvas"></canvas>
             </div>
 
-            <div class="prediction-box">
-                <h2>La IA detecta:</h2>
-                <span id="prediccion">...</span>
-                <small>Coloca tu mano frente a la cámara</small>
-                <h2 style="margin-top: 20px;">Tu emoción:</h2>
-                <span id="emocion" style="color: #e67e22; font-size: 3rem;">...</span>
+            <div class="results-bar">
+                <div class="result-card">
+                    <h3>Letra Detectada</h3>
+                    <span id="prediccion" class="result-value">...</span>
+                </div>
+                
+                <div class="result-card">
+                    <h3>Emoción</h3>
+                    <span id="emocion" class="result-value">...</span>
+                </div>
+
+                <div class="result-card">
+                    <h3>Palabra</h3>
+                    <span id="textoFormado" class="result-value">...</span>
+                </div>
             </div>
 
-<div class="prediction-box" id="texto-formado-box">
-    <h2>Palabra formada:</h2>
-    <span id="textoFormado" style="font-size: 2rem; color: #28a745; font-weight: bold;">...</span>
-</div>
+            <div class="info-box">
+                <strong>Instrucciones:</strong> Coloca tu mano derecha frente a la cámara. Asegúrate de tener buena iluminación.
+            </div>
 
         </div>
 
-        <section class="info-section">
-            <h3>¡Hola! Te damos la bienvenida</h3>
-            <p>
-                Esta herramienta utiliza <strong>Inteligencia Artificial</strong> para reconocer las señas del abecedario en tiempo real. Es un proyecto creado con la esperanza de hacer el aprendizaje más accesible y divertido para todos.
-            </p>
-            <p>
-                <strong>¿Cómo funciona?</strong> Tu cámara captura la imagen, y un modelo de IA (MediaPipe) analiza los 21 puntos clave de tu mano. Esos puntos se envían a nuestro modelo, que predice la letra que estás formando. ¡Es una forma fantástica de practicar!
-            </p>
-            <p>
-                Creemos en un mundo donde todos pueden compartir sus ideas. Gracias por ser parte de este viaje.
-            </p>
-        </section>
+        <div class="right-column">
+            <h3>Guía de Señas</h3>
+            <img src="{% static 'Muestra.png' %}" alt="Guía del Abecedario" class="guide-image">
+        </div>
 
-    </main>
+    </div>
 
     <footer>
-        Un proyecto de IA con ❤️, Django y Google Cloud.
+        Proyecto Final de IA - Desarrollado con Django y MediaPipe
     </footer>
 
     <script src="{% static 'main.js' %}"></script>
+
 </body>
 </html>
